@@ -29,11 +29,11 @@ void linux_util::device::retry_xioctl(linux_util::device::request_t request, voi
 }
 
 void linux_util::device::open_device() {
-
+    //TODO
 }
 
 void linux_util::device::close_device() {
-
+    //TODO
 }
 
 
