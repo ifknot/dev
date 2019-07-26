@@ -48,6 +48,8 @@ namespace linux_util {
          */
         void close_device();
 
+        fildes_t fd();
+
         /**
          * @brief exception throwing wrapper for ioctl input/output device system call
          * @param request - device dependent request code that has encoded within whether the argument is an in parameter
@@ -70,7 +72,7 @@ namespace linux_util {
     private:
 
         std::string device_path;
-        fildes_t fd{-1}; /// file descriptor POSIX API abstract handle to an input/output resource
+        fildes_t fd_{-1}; /// file descriptor POSIX API abstract handle to an input/output resource
 
         virtual void initialize() = 0;
 
