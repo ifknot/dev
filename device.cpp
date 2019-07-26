@@ -2,6 +2,7 @@
 
 linux_util::device::device(const std::string &device_path) : device_path(device_path) {
     open_device();
+    initialize();
 }
 
 void linux_util::device::xioctl(linux_util::device::request_t request, void *argp) {
@@ -11,6 +12,7 @@ void linux_util::device::xioctl(linux_util::device::request_t request, void *arg
 }
 
 linux_util::device::~device() {
+    deinitialize();
     close_device();
 }
 
@@ -29,11 +31,18 @@ void linux_util::device::retry_xioctl(linux_util::device::request_t request, voi
 }
 
 void linux_util::device::open_device() {
-    //TODO
+    fd = open(device_path.c_str(), O_RDWR);
+    if(fd == -1) {
+        throw std::invalid_argument(strerror(errno));
+    }
 }
 
 void linux_util::device::close_device() {
-    //TODO
+    if (close(fd) == -1) {
+        throw std::invalid_argument(strerror(errno));
+    }
 }
+
+
 
 

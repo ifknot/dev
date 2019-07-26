@@ -1,16 +1,19 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-#include <sys/ioctl.h>  //ioctl
-#include <string.h>     //strerror
+#include <unistd.h>     // close
+#include <sys/ioctl.h>  // ioctl
+#include <fcntl.h>      // access modes O_RDWR
+#include <string.h>     // strerror
 
 #include <string>
 #include <stdexcept>
+#include <cassert>
 
 namespace linux_util {
 
     /**
-     * @brief linux device base class
+     * @brief abstract linux device base class
      */
     class device {
 
@@ -53,9 +56,22 @@ namespace linux_util {
         std::string device_path;
         fildes_t fd{-1}; /// file descriptor POSIX API abstract handle to an input/output resource
 
+        /**
+         * Acquire the file descriptor in read and write mode
+         * @throws std::invalid_argument(strerror(errno))
+         */
         void open_device();
 
+        /**
+         * Release the file descriptor
+         * @throws std::invalid_argument(strerror(errno))
+         */
         void close_device();
+
+
+        virtual void initialize() = 0;
+
+        virtual void deinitialize() = 0;
 
     };
 
