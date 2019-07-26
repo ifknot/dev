@@ -30,7 +30,23 @@ namespace linux_util {
 
         explicit device(const std::string& device_path);
 
-        ~device();
+        virtual ~device();
+
+    protected:
+
+        const std::string ERR = "ERROR ";
+
+        /**
+         * Acquire the file descriptor in read and write mode
+         * @throws std::invalid_argument(strerror(errno))
+         */
+        void open_device();
+
+        /**
+         * Release the file descriptor
+         * @throws std::invalid_argument(strerror(errno))
+         */
+        void close_device();
 
         /**
          * @brief exception throwing wrapper for ioctl input/output device system call
@@ -55,19 +71,6 @@ namespace linux_util {
 
         std::string device_path;
         fildes_t fd{-1}; /// file descriptor POSIX API abstract handle to an input/output resource
-
-        /**
-         * Acquire the file descriptor in read and write mode
-         * @throws std::invalid_argument(strerror(errno))
-         */
-        void open_device();
-
-        /**
-         * Release the file descriptor
-         * @throws std::invalid_argument(strerror(errno))
-         */
-        void close_device();
-
 
         virtual void initialize() = 0;
 
